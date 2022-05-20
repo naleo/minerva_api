@@ -82,4 +82,14 @@ router.patch("/courses/:id", async (req, res) => {
     }
 });
 
+router.delete("/courses/:id", async (req, res) => {
+    try {
+        await Course.deleteOne({_id: req.params.id })
+        res.status(204).send()
+    } catch {
+        res.status(404)
+        res.send({ error: "Course does not exist!" });
+    }
+})
+
 module.exports = router;
