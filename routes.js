@@ -9,5 +9,15 @@ router.get("/courses", async (req, res) => {
     res.send(courses);
 });
 
+router.get("/courses/:id", async (req, res) => {
+    try {
+        const course = await Course.findOne({ _id: req.params.id });
+        res.send(course);
+    } catch {
+        res.status(404);
+        res.send({ error: "Course does not exist!" });
+    }
+});
+
 
 module.exports = router;
