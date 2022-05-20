@@ -19,5 +19,21 @@ router.get("/courses/:id", async (req, res) => {
     }
 });
 
+router.post("/courses", async (req, res) => {
+    const course = new Course({
+        studentId: req.body.studentId,
+        courseId: req.body.courseId,
+        dateGiven: req.body.dateGiven,
+        dateDue: req.body.dateDue,
+        isComplete: req.body.isComplete,
+        dateComplete: req.body.dateComplete,
+        pointsPossible: req.body.pointsPossible,
+        pointsEarned: req.body.pointsEarned,
+        description: req.body.description,
+    });
+    await course.save();
+    res.send(course);
+});
+
 
 module.exports = router;
