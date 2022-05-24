@@ -1,6 +1,6 @@
 const express = require("express");
-const course = require("./models/course");
-const Course = require("./models/course"); //Capitalized because class name
+const assignment = require("./models/assignment");
+const Assignment = require("./models/assignment"); //Capitalized because class name
 const router = express.Router();
 
 router.get("/test", (req, res) => {
@@ -10,28 +10,28 @@ router.get("/test", (req, res) => {
     res.send(resObject);
 });
 
-// GET all courses
-router.get("/courses", async (req, res) => {
-    const courses = await Course.find();
-    res.send(courses);
+// GET all assignments
+router.get("/assignments", async (req, res) => {
+    const assignments = await Assignment.find();
+    res.send(assignments);
 });
 
-// GET one course
-router.get("/courses/:id", async (req, res) => {
+// GET one assignment
+router.get("/assignments/:id", async (req, res) => {
     try {
-        const course = await Course.findOne({ _id: req.params.id });
-        res.send(course);
+        const assignment = await Assignment.findOne({ _id: req.params.id });
+        res.send(assignment);
     } catch {
         res.status(404);
-        res.send({ error: "Course does not exist!" });
+        res.send({ error: "Assignment does not exist!" });
     }
 });
 
-// POST create one course
-router.post("/courses", async (req, res) => {
-    const course = new Course({
+// POST create one assignment
+router.post("/assignments", async (req, res) => {
+    const assignment = new Assignment({
         studentId: req.body.studentId,
-        courseId: req.body.courseId,
+        assignmentId: req.body.assignmentId,
         dateGiven: req.body.dateGiven,
         dateDue: req.body.dateDue,
         isComplete: req.body.isComplete,
@@ -40,67 +40,67 @@ router.post("/courses", async (req, res) => {
         pointsEarned: req.body.pointsEarned,
         description: req.body.description,
     });
-    await course.save();
-    res.send(course);
+    await assignment.save();
+    res.send(assignment);
 });
 
 
-// PATCH update course
-router.patch("/courses/:id", async (req, res) => {
+// PATCH update assignment
+router.patch("/assignments/:id", async (req, res) => {
     try {
-        const course = await Course.findOne({ _id: req.params.id });
+        const assignment = await Assignment.findOne({ _id: req.params.id });
         
         if (req.body.studentId) {
-            course.studentId = req.body.studentId;
+            assignment.studentId = req.body.studentId;
         }
 
-        if (req.body.courseId) {
-            course.courseId = req.body.courseId;
+        if (req.body.assignmentId) {
+            assignment.assignmentId = req.body.assignmentId;
         }
         
         if (req.body.dateGiven) {
-            course.dateGiven = req.body.dateGiven;
+            assignment.dateGiven = req.body.dateGiven;
         }
 
         if (req.body.dateDue) {
-            course.dateDue = req.body.dateDue;
+            assignment.dateDue = req.body.dateDue;
         }
         
         if (req.body.isComplete) {
-            course.isComplete = req.body.isComplete;
+            assignment.isComplete = req.body.isComplete;
         }
 
         if (req.body.dateComplete) {
-            course.dateComplete = req.body.dateComplete;
+            assignment.dateComplete = req.body.dateComplete;
         }
 
         if (req.body.pointsPossible) {
-            course.pointsPossible = req.body.pointsPossible;
+            assignment.pointsPossible = req.body.pointsPossible;
         }
 
         if (req.body.pointsEarned) {
-            course.pointsEarned = req.body.pointsEarned;
+            assignment.pointsEarned = req.body.pointsEarned;
         }
 
         if (req.body.description) {
-            course.description = req.body.description;
+            assignment.description = req.body.description;
         }
-        await course.save();
-        res.send(course);
+        await assignment.save();
+        res.send(assignment);
     } catch {
         res.status(404);
-        res.send({ error: "Course does not exist!" });
+        res.send({ error: "Assignment does not exist!" });
     }
 });
 
-// DELETE course
-router.delete("/courses/:id", async (req, res) => {
+// DELETE assignment
+router.delete("/assignments/:id", async (req, res) => {
     try {
-        await Course.deleteOne({_id: req.params.id })
+        await Assignment.deleteOne({_id: req.params.id })
         res.status(204).send()
     } catch {
         res.status(404)
-        res.send({ error: "Course does not exist!" });
+        res.send({ error: "Assignment does not exist!" });
     }
 })
 

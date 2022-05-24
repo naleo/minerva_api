@@ -1,7 +1,7 @@
 //Requirements
 const mongoose = require("mongoose");
 
-var courseSchema = new mongoose.Schema({
+var assignmentSchema = new mongoose.Schema({
     schemaVersion: { type: Number, default: 1 },
     studentId: mongoose.Schema.Types.ObjectID,
     courseId: mongoose.Schema.Types.ObjectID,
@@ -15,4 +15,4 @@ var courseSchema = new mongoose.Schema({
 });
 
 //Export to create model
-module.exports = mongoose.model("Course", courseSchema);
+module.exports = mongoose.model("Assignment", assignmentSchema);
