@@ -3,12 +3,20 @@ const course = require("./models/course");
 const Course = require("./models/course"); //Capitalized because class name
 const router = express.Router();
 
+router.get("/test", (req, res) => {
+    const resObject = {
+        message: "Test API working"
+    };
+    res.send(resObject);
+});
+
 // GET all courses
 router.get("/courses", async (req, res) => {
     const courses = await Course.find();
     res.send(courses);
 });
 
+// GET one course
 router.get("/courses/:id", async (req, res) => {
     try {
         const course = await Course.findOne({ _id: req.params.id });
@@ -19,6 +27,7 @@ router.get("/courses/:id", async (req, res) => {
     }
 });
 
+// POST create one course
 router.post("/courses", async (req, res) => {
     const course = new Course({
         studentId: req.body.studentId,
@@ -35,6 +44,8 @@ router.post("/courses", async (req, res) => {
     res.send(course);
 });
 
+
+// PATCH update course
 router.patch("/courses/:id", async (req, res) => {
     try {
         const course = await Course.findOne({ _id: req.params.id });
@@ -82,6 +93,7 @@ router.patch("/courses/:id", async (req, res) => {
     }
 });
 
+// DELETE course
 router.delete("/courses/:id", async (req, res) => {
     try {
         await Course.deleteOne({_id: req.params.id })
