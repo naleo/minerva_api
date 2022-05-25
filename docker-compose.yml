@@ -2,6 +2,8 @@ version: '3'
 services:
   minerva:
     build: ./
+    tty: true # gives colorized logs in docker-compose logs
+    entrypoint: 'npm start'
     ports:
       - 3000:3000
     volumes:
@@ -11,4 +13,14 @@ services:
   mongo:
     image: mongo:5.0
     volumes:
-      - ./data:/data/db
+      - mongo_data:/data/db
+    ports:
+      - 27017:27017
+  hoster:
+    image: dvdarias/docker-hoster
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock
+      - /etc/hosts:/tmp/hosts
+
+volumes:
+  mongo_data:
