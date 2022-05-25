@@ -14,4 +14,4 @@ COPY . /usr/src/app
 
 EXPOSE 3000
 
-ENTRYPOINT npm start
+ENTRYPOINT ["npm", "start"]
