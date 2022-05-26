@@ -1,23 +1,15 @@
 const express = require("express");
-const assignment = require("./models/assignment");
-const Assignment = require("./models/assignment"); //Capitalized because class name
+const Assignment = require("../models/assignment"); //Capitalized because class name
 const router = express.Router();
 
-router.get("/test", (req, res) => {
-    const resObject = {
-        message: "Test API working"
-    };
-    res.send(resObject);
-});
-
 // GET all assignments
-router.get("/assignments", async (req, res) => {
+router.get("/", async (req, res) => {
     const assignments = await Assignment.find();
     res.send(assignments);
 });
 
 // GET one assignment
-router.get("/assignments/:id", async (req, res) => {
+router.get("/:id", async (req, res) => {
     try {
         const assignment = await Assignment.findOne({ _id: req.params.id });
         res.send(assignment);
@@ -28,7 +20,7 @@ router.get("/assignments/:id", async (req, res) => {
 });
 
 // POST create one assignment
-router.post("/assignments", async (req, res) => {
+router.post("/", async (req, res) => {
     const assignment = new Assignment({
         studentId: req.body.studentId,
         assignmentId: req.body.assignmentId,
@@ -41,12 +33,13 @@ router.post("/assignments", async (req, res) => {
         description: req.body.description,
     });
     await assignment.save();
+    res.status(201);
     res.send(assignment);
 });
 
 
 // PATCH update assignment
-router.patch("/assignments/:id", async (req, res) => {
+router.patch("/:id", async (req, res) => {
     try {
         const assignment = await Assignment.findOne({ _id: req.params.id });
         
@@ -94,7 +87,7 @@ router.patch("/assignments/:id", async (req, res) => {
 });
 
 // DELETE assignment
-router.delete("/assignments/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
     try {
         await Assignment.deleteOne({_id: req.params.id })
         res.status(204).send()
