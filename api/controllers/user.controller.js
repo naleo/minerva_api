@@ -26,8 +26,14 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
     try {
         const user = await User.findOne({ username: req.body.username });
-        const loggedIn = await user.comparePassword(req.body.password);
-        res.send(loggedIn);
+        const passwordMatches = await user.comparePassword(req.body.password);
+        if (passwordMatches) {
+            //generate and return jwt
+            res.send(loggedIn);
+        } else {
+            res.status(401);
+            res.send(loggedIn);
+        }
     } catch (error) {
         res.status(500);
         res.send(error);

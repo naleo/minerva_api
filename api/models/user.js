@@ -36,9 +36,7 @@ userSchema.methods.comparePassword = function(possiblePassword) {
             if (err) {
                 reject(err);
             } else {
-                resolve({
-                    authenticated: isMatch
-                });
+                resolve(isMatch);
             }
         })
     })
