@@ -1,5 +1,4 @@
 const express = require("express");
-const Assignment = require("../models/assignment"); //Capitalized because class name
 const router = express.Router();
 const controller = require("../controllers/assignment.controller");
 

@@ -5,7 +5,7 @@ const routes = require("./api.routes");
 
 //allow for .env file usage
 
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 3000;
 
 const app = express();
 app.use(express.json());
