@@ -3,7 +3,11 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const config = require("../config")
 
-
+//TODO - Add refresh tokens
+//TODO - Make refresh tokens stored in cookie
+//TODO - Make JWT tokens stored in memory
+//TODO - implement duplicate refresh token usage invalidates entire chain
+//
 exports.register = async (req, res) => {
     try {
         const user = new User({
@@ -33,15 +37,15 @@ exports.login = async (req, res) => {
         const user = await User.findOne({ username: req.body.username });
         const passwordMatches = await user.comparePassword(req.body.password);
         if (passwordMatches) {
-            var token = jwt.sign({ id: user.id }, config.secrets.jwt, {
+            var token = jwt.sign({ id: user._id }, config.secrets.jwt, {
                 expiresIn: config.secrets.jwtExp
             })
             res.status(200);
+            req.session.token = token;
             res.send({
-                id: user.id,
+                id: user._id,
                 username: user.username,
                 email: user.email,
-                accessToken: token
             });
         } else {
             res.status(401);
@@ -54,5 +58,15 @@ exports.login = async (req, res) => {
         res.status(500);
         res.send(error);
     }
+}
 
+exports.logout = async (req, res) => {
+    try {
+        req.session = null;
+        res.status(200);
+        res.send({ message: "You have been logged out!" });
+    } catch (error) {
+        res.status(500);
+        res.send(error);
+    }
 }
