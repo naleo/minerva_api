@@ -1,5 +1,7 @@
 const User = require("../models/user");
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const config = require("../config")
 
 
 exports.register = async (req, res) => {
@@ -19,7 +21,10 @@ exports.register = async (req, res) => {
         res.send(result);
     } catch (error) {
         res.status(500);
-        res.send(error);
+        res.send({
+            message: error.message,
+            keyPattern: error.keyPattern
+        });
     }
 }
 
@@ -28,11 +33,22 @@ exports.login = async (req, res) => {
         const user = await User.findOne({ username: req.body.username });
         const passwordMatches = await user.comparePassword(req.body.password);
         if (passwordMatches) {
-            //generate and return jwt
-            res.send(loggedIn);
+            var token = jwt.sign({ id: user.id }, config.secrets.jwt, {
+                expiresIn: config.secrets.jwtExp
+            })
+            res.status(200);
+            res.send({
+                id: user.id,
+                username: user.username,
+                email: user.email,
+                accessToken: token
+            });
         } else {
             res.status(401);
-            res.send(loggedIn);
+            res.send({
+                accessToken: null,
+                message: "Invalid Password!"
+            });
         }
     } catch (error) {
         res.status(500);
