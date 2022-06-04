@@ -30,7 +30,6 @@ exports.register = async (req, res) => {
             roles: [req.body.roleID]
         });
         var result = await user.save();
-        result.exclude("password");
         res.status(200);
         res.send(result);
     } catch (error) {

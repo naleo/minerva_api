@@ -4,8 +4,7 @@ const assignmentRoutes = require("./routes/assignment.routes")
 const userRoutes = require("./routes/user.routes")
 const middlewares = require("./middlewares/middlewares")
 
-router.use(middlewares.authJwt.verifyToken);
-router.use(middlewares.authorization.addRolesToReq);
+router.use([middlewares.authJwt.verifyToken, middlewares.authorization.addRolesToReq]);
 router.use("/assignments", assignmentRoutes);
 router.use("/users", userRoutes);
 

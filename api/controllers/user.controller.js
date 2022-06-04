@@ -2,7 +2,7 @@ const User = require("../models/user")
 
 exports.updateUser = async (req, res) => {
     try {
-        if(req.userID = req.params.id || req.roles.includes("admin")) {
+        if(req.userId == req.params.id || req.roles.includes("admin")) {
             const user = await User.findById(req.params.id).select('+password');
             if (req.body.firstName) {
                 user.firstName = req.body.firstName;
@@ -35,6 +35,9 @@ exports.updateUser = async (req, res) => {
                 res.status(200);
                 res.send(user);
             }
+        } else {
+            res.status(403);
+            res.send({ message: "Unauthorized" });
         }
     } catch {
         res.status(500);
