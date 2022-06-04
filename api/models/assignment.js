@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 var assignmentSchema = new mongoose.Schema({
     schemaVersion: { type: Number, default: 1 },
-    studentId: mongoose.Schema.Types.ObjectID,
+    studentId: { type: mongoose.Schema.Types.ObjectID, rel: "User"},
     courseId: mongoose.Schema.Types.ObjectID,
     dateGiven: Date,
     dateDue: Date,

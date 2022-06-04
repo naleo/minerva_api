@@ -10,8 +10,8 @@ var userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     gradeLevel: Number,
-    password: { type: String, required: true },
-    role: String
+    password: { type: String, required: true, select: false },
+    roles: [{ type: mongoose.Schema.Types.ObjectId, ref: "Role", default: []}]
 })
 
 userSchema.pre('save', function(next) {

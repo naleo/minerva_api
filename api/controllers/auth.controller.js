@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Role = require("../models/role")
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const config = require("../config")
@@ -10,6 +11,14 @@ const config = require("../config")
 //
 exports.register = async (req, res) => {
     try {
+        const users = await User.find();
+        if (users.length == 0) {
+            const role = await Role.findOne({ name: "admin" });
+            req.body.roleID = role._id;
+        } else {
+            const role = await Role.findOne({ name: "student" });
+            req.body.roleID = role._id;
+        }
         const user = new User({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
@@ -18,9 +27,10 @@ exports.register = async (req, res) => {
             email: req.body.email,
             gradeLevel: req.body.gradeLevel,
             password: req.body.password,
-            role: req.body.role
+            roles: [req.body.roleID]
         });
         var result = await user.save();
+        result.exclude("password");
         res.status(200);
         res.send(result);
     } catch (error) {
@@ -34,7 +44,7 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
     try {
-        const user = await User.findOne({ username: req.body.username });
+        const user = await User.findOne({ username: req.body.username }).select('+password');
         const passwordMatches = await user.comparePassword(req.body.password);
         if (passwordMatches) {
             var token = jwt.sign({ id: user._id }, config.secrets.jwt, {
