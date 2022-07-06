@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-mongoose.set('debug', true);
 const Role = require("./models/role")
 
 
@@ -24,7 +23,7 @@ function roleSetup() {
                 if (err) {
                     console.log("error", err);
                 }
-                console.log("added 'student' to roles collection");
+                // console.log("added 'student' to roles collection");
             })
             new Role({
                 name: "teacher"
@@ -32,7 +31,7 @@ function roleSetup() {
                 if (err) {
                     console.log("error", err);
                 }
-                console.log("added 'teacher' to roles collection");
+                // console.log("added 'teacher' to roles collection");
             })
             new Role({
                 name: "admin"
@@ -40,10 +39,10 @@ function roleSetup() {
                 if (err) {
                     console.log("error", err);
                 }
-                console.log("added 'admin' to roles collection");
+                // console.log("added 'admin' to roles collection");
             })
         }
     })
 }
 
-module.exports = { dbconnect, dbclose }
+module.exports = { dbconnect, dbclose, roleSetup }

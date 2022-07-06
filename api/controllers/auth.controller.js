@@ -33,6 +33,7 @@ exports.register = async (req, res) => {
         res.status(200);
         res.send(result);
     } catch (error) {
+        console.log(error);
         res.status(500);
         res.send({
             message: error.message,
