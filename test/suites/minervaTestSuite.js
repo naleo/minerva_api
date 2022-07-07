@@ -39,9 +39,9 @@ module.exports = (testDescription, testsCallBack) => {
                 });
         };
 
-        const clearDB = () => {
+        const clearDB = async () => {
             for (var i in mongoose.connection.collections) {
-                mongoose.connection.collections[i].deleteMany(() => {});
+                await mongoose.connection.collections[i].deleteMany(() => {});
             }
         };
 
@@ -52,11 +52,10 @@ module.exports = (testDescription, testsCallBack) => {
             process.env.MONGO_URI = mongoURI;
             await mongooseConnect
                 .dbconnect()
-                .on("error", (err) => console.log(err));
         });
 
         beforeEach(async () => {
-            //beforeEach stuff clearing out the db.
+            //becforeEach stuff clearing out the db.
             await clearDB();
             await mongooseConnect.roleSetup();
         });

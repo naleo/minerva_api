@@ -2,19 +2,20 @@ const mongoose = require("mongoose");
 const Role = require("./models/role")
 
 
-function dbconnect() {
+const dbconnect = async () => {
     const db = process.env.MONGO_URI || "mongodb://mongo:27017/dev"
     //mongoose.set('debug', true);
-    mongoose.connect(db);
+    await mongoose.connect(db);
     roleSetup();
     return mongoose.connection;
 }
 
-function dbclose() {
-    return mongoose.disconnect();
+const dbclose = async () => {
+    const val = await mongoose.disconnect();
+    return val;
 }
 
-function roleSetup() {
+const roleSetup = async () => {
     Role.estimatedDocumentCount((err, count) => {
         if (!err && count === 0) {
             new Role({

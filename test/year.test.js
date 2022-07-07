@@ -1,11 +1,15 @@
 const chai = require("chai");
 const chaiHttp = require("chai-http");
+const request = require("supertest");
+const mongoose = require("mongoose");
 const minervaTestSuite = require("./suites/minervaTestSuite");
+const app = require("../api/api");
 const { expect, assert } = require("chai");
+const should = chai.should();
 chai.use(chaiHttp);
 
 minervaTestSuite("API Assignments Endpoint", (signUpThenLogIn) => {
-    it("GET /api/assignments --> array assignments", (done) => {
+    it("GET /api/assigments --> array assignments", (done) => {
         signUpThenLogIn((agent) => {
             agent.get("/api/assignments").end((err, res) => {
                 console.log(res.body);
@@ -17,7 +21,7 @@ minervaTestSuite("API Assignments Endpoint", (signUpThenLogIn) => {
             });
         });
     });
-    it("GET /api/assignments/:id --> 404 (assignment not found)", (done) => {
+    it("GET /api/assigments/:id --> 404 (assignment not found)", (done) => {
         signUpThenLogIn((agent) => {
             agent.get("/api/assignments/24").end((err, res) => {
                 expect(res).to.have.status(404);
@@ -30,7 +34,7 @@ minervaTestSuite("API Assignments Endpoint", (signUpThenLogIn) => {
             });
         });
     });
-    it("POST /api/assignments --> freshly created assignment", (done) => {
+    it("POST /api/assignents --> freshly created assignment", (done) => {
         signUpThenLogIn((agent) => {
             agent
                 .post("/api/assignments")
